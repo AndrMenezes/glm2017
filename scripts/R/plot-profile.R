@@ -81,25 +81,3 @@ axis(1, seq(0, 1, by = 0.25),FF(seq(0, 1, by = 0.25), 2))
 axis(2, seq(0, 1, by = 0.25),FF(seq(0, 1, by = 0.25), 2))
 mtext("Theoretical probabilities", side = 1, line = 2.0, cex = 1.8)
 mtext("Empirical probabilities", side = 2.1, line =2.2, cex = 1.8)
-
-
-plot(phis, sqrt(dev.perf), type = "l")
-
-
-
-
-
-
-
-
-
-
-# deviance da aprox quadr?tica
-dev.quad <- (phiSAS - phis)^2 / sd.phiSAS
-# limites do IC perfilado
-qchi  <- qchisq(0.90, df=1)
-fperf <- approxfun(phis, dev.perf - qchi)
-icperf <- uniroot.all(fperf, c(0, 10)) 
-# limites do IC assint?tico 
-icwald <- phiSAS + c(-1,1) * qnorm(1-0.05/2) * sd.phiSAS 
-rbind(icperf, icwald)

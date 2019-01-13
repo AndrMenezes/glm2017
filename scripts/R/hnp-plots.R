@@ -1,5 +1,5 @@
 rm(list = ls())
-setwd("C:/Users/User/Dropbox/4° Série/Modelos Lineares Generalizados/trabalho")
+setwd("C:/Users/User/Dropbox/4Â° SÃ©rie/Modelos Lineares Generalizados/trabalho")
 library(hnp)
 library(MASS)
 library(foreign)
@@ -18,7 +18,7 @@ hnp.plot <- function(myhnp, dist, auxdist)
        xlim = c(0, 3.5), ylim = c(0, 8.5))
   lines(myhnp$x, myhnp$lower); lines(myhnp$x, myhnp$upper); lines(myhnp$x, myhnp$median)
   mtext("Percentil da N(0, 1)", side = 1, line = 2.0, cex = 1.8)
-  mtext(expression(paste(sqrt("Resíduos de Pearson"))), side = 2, line =2, cex = 1.8)
+  mtext(expression(paste(sqrt("ResÃ­duos de Pearson"))), side = 2, line =2, cex = 1.8)
   abline(h=seq(0, 8, by = 1), v=seq(0, 3.5, by = 0.5), col = "gray", lty = "dotted")
   axis(1, seq(0, 3.5, by = 0.5))
   axis(2, seq(0, 8, by = 1))
@@ -48,40 +48,3 @@ hnp.plot(myhnp = hnp.zip, dist = "Poisson Inflacionada de Zero", auxdist = "zip"
 mod.zinb <- zeroinfl(art ~ fem + mar + kid5 + ment, data = dados, dist = 'negbin')
 hnp.zinb <- hnp(mod.zinb, resid.type = "pearson", plot.sim = F, how.many.out = T, print.on = T, paint.out = T)
 hnp.plot(myhnp = hnp.zip, dist = "Binomial Negativa Inflacionada de Zero", auxdist = "zinb")
-
-
-
-
-
-
-
-
-
-
-
-
-pred.p  <- predict(mod.p)
-plot(x=exp(pred.p), y = dados$art); abline(a = 0, b = 1)
-pred.nb <- predict(mod.nb)
-plot(x=exp(pred.nb), y = dados$art); abline(a = 0, b = 1)
-
-
-
-
-
-install.packages("dae")
-library(dae)
-data(SPLGrass.dat)
-interaction.ABC.plot(Main.Grass, x.factor=Period,
-                     groups.factor=Spring, trace.factor=Summer,
-                     data=SPLGrass.dat,
-                     title="Effect of Period, Spring and Summer on Main Grass")
-
-library(VGAM)
-gdata = data.frame(x2 = runif(nn <- 200))
-gdata = transform(gdata, y = rpois(nn, exp(2 - x2))) # Ordinary Poisson data
-fit  = vglm(y ~ x2, genpoisson(zero = 1), gdata, trace = TRUE)
-coef(fit, matrix = TRUE)
-summary(fit)
-
-

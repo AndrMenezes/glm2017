@@ -1,14 +1,14 @@
 rm(list = ls(all.names = TRUE))
 packages <- c('betareg', 'simplexreg', 'hnp', 'tidyverse', 'fitdistrplus')
 sapply(packages, require, character.only = T)
-source('C:/Users/User/Dropbox/4∞ SÈrie/Modelos Lineares Generalizados/trabalho/scripts/rpp2-simplex.R')
-setwd('C:/Users/User/Dropbox/4∞ SÈrie/Modelos Lineares Generalizados/trabalho')
+source('C:/Users/User/Dropbox/4¬∞ S√©rie/Modelos Lineares Generalizados/trabalho/scripts/rpp2-simplex.R')
+setwd('C:/Users/User/Dropbox/4¬∞ S√©rie/Modelos Lineares Generalizados/trabalho')
 FF <- function(x,Digits=4,Width=4){(formatC(x,digits=Digits,width=Width,format="f"))}
 
 # Dados -------------------------------------------------------------------
 dados  <- read.delim(file = 'idh_pt2010.txt')
 sul    <- dados %>% filter(regiao == 'Sul')
-parana <- dados %>% filter(ufn == 'Paran·' & pt2006 != 0)
+parana <- dados %>% filter(ufn == 'Paran√°' & pt2006 != 0)
 head(parana)
 
 # Descritiva --------------------------------------------------------------
@@ -61,7 +61,7 @@ pdf(file = "hnp-beta1.pdf", width = 10, height = 7)
 par(mar = c(3.5, 3.5, 1.2, 0.6), cex = 1.8)
 plot(beta.hnp, xaxt = 'n', yaxt = 'n', xlab = '', ylab = '', cex = 0.6, ylim = c(-4, 4))
 mtext("Percentil da N(0, 1)", side = 1, line = 2.0, cex = 1.8)
-mtext("ResÌduos padronizados ponderados", side = 2, line =2, cex = 1.8)
+mtext("Res√≠duos padronizados ponderados", side = 2, line =2, cex = 1.8)
 abline(h = seq(-4, 4, l = 5), v=seq(-3, 3, l = 5), col = "gray", lty = "dotted")
 axis(1, seq(-3, 3, l = 5))
 axis(2, seq(-4, 4, l = 5), FF(seq(-4, 4, l = 5), 1))
@@ -97,7 +97,7 @@ pdf(file = "hnp-simp1.pdf", width = 10, height = 7)
 par(mar = c(3.5, 3.5, 1.2, 0.6), cex = 1.8)
 plot(simp.hnp, xaxt = 'n', yaxt = 'n', xlab = '', ylab = '', cex = 0.6, ylim = c(-4, 4))
 mtext("Percentil da N(0, 1)", side = 1, line = 2.0, cex = 1.8)
-mtext("ResÌduos padronizados ponderados", side = 2, line =2, cex = 1.8)
+mtext("Res√≠duos padronizados ponderados", side = 2, line =2, cex = 1.8)
 abline(h = seq(-4, 4, l = 5), v=seq(-3, 3, l = 5), col = "gray", lty = "dotted")
 axis(1, seq(-3, 3, l = 5))
 axis(2, seq(-4, 4, l = 5), FF(seq(-4, 4, l = 5), 1))
@@ -116,133 +116,3 @@ pdf(file = "pred-beta1.pdf", width = 9, height = 6)
 par(mar = c(3.5, 3.5, 1.2, 1.2), cex = 1.6)
 with(preditos, plot(betalower ~ pt2010, xaxt = 'n', yaxt = 'n', xlab = '', ylab = '', cex = 0.8))
 with(preditos, abline(lsfit(x = pt2010, y = betalower), lty = 2, lwd = 2))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-di        <- sort(residuals(mod.beta, type = 'weighted'))
-n         <- length(di)
-i         <- 1:n
-zi        <- qnorm((i + 3/8) / (n + 1/4))
-df        <- mod.beta$model
-mu        <- predict(mod.beta)
-phi       <- coef(mod.beta)[10]
-alpha     <- mu * phi 
-beta      <- (1 - mu) * phi 
-preditor  <- mod.beta$formula
-results   <- matrix(ncol = 100, nrow = n)
-for(k in 1:1000)
-{
-  df$pt2010    <- sapply(1:n, function(j) rbeta(n = 1, shape1 = alpha[j], shape2 = beta[j])) 
-  fit          <- betareg(preditor, data = df, link = 'logit', link.phi = 'identity')
-  results[, k] <- sort(residuals(fit, type = 'weighted')) 
-}
-
-
-
-vmin <- apply(results, 1, min, na.rm = T)
-vmax <- apply(results, 1, max, na.rm = T)
-vmed <- apply(results, 1, median, na.rm = T)
-plot(di ~ zi)
-lines(zi, e1)
-lines(zi, e2)
-
-plot(di ~ zi);lines(zi, vmin);lines(zi, vmax);lines(zi, vmed)
-
-
-di        <- sort(residuals(mod.simp, type = 'stdPerr'))
-n         <- length(di)
-i         <- 1:n
-zi        <- qnorm((i + 3/8) / (n + 1/4))
-df        <- mod.simp$model
-mu        <- predict(mod.simp)
-phi       <- (mod.simp$Dispersion)
-preditor  <- mod.simp$formula
-results   <- matrix(ncol = 100, nrow = n)
-for(k in 1:100)
-{
-  df$pt2010    <- sapply(1:n, function(j) rsimplex(n = 1, mu = mu[j], sig = phi)) 
-  fit          <- simplexreg(preditor, data = df, link = 'logit')
-  results[, k] <- sort(residuals(fit, type = 'stdPerr'))
-}
-
-
-
-vmin <- apply(results, 1, min, na.rm = T)
-vmax <- apply(results, 1, max, na.rm = T)
-vmed <- apply(results, 1, median, na.rm = T)
-plot(di ~ zi);lines(zi, vmin);lines(zi, vmax);lines(zi, vmed)
-
-
-
-
-
-di        <- sort(abs(residuals(mod.simp, type = 'appstdPerr')))
-n         <- length(di)
-i         <- 1:n
-zi        <- qnorm((i + n - 1/8) / (2 * n + 1/2))
-df        <- mod.simp$model
-mu        <- predict(mod.simp)
-phi       <- (mod.simp$Dispersion)
-preditor  <- mod.simp$formula
-results   <- matrix(ncol = 100, nrow = n)
-for(k in 1:100)
-{
-  # df$pt2010    <- sapply(1:n, function(j) rsimplex(n = 1, mu = mu[j], dispersion = phi)) 
-  df$pt2010    <- rsimplex(n = n, mu = mu, dispersion = phi) 
-  fit          <- simplexreg(preditor, data = df, link = 'logit')
-  results[, k] <- sort(abs(residuals(fit, type = 'stdPerr')))
-}
-vmin <- apply(results, 1, min, na.rm = T)
-vmax <- apply(results, 1, max, na.rm = T)
-vmed <- apply(results, 1, median, na.rm = T)
-plot(di ~ zi);lines(zi, vmin, lty = 3);lines(zi, vmax, lty = 3);lines(zi, vmed, lty= 3)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

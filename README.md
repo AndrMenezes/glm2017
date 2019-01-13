@@ -1,6 +1,6 @@
 # Generalized Linear Models - DEs/UEM #
 
-> The final work developed for the course of Generalized Linear Models in the first semester of 2017 at [DEs/UEM](http://www.des.uem.br/) minister by professor [Rosangela Getirana Santana](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4781706A4).
+> The final work developed for the course of Generalized Linear Models in the first semester of 2017 taught by professor [Rosangela Getirana Santana](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4781706A4) at DEs/UEM.
 
 ## Regression models: Applications in counting and proportions data
 
